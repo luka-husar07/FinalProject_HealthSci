@@ -3,8 +3,10 @@ import torch
 from torch.utils.data import Dataset, DataLoader
 from torchvision import transforms
 from PIL import Image
-import kagglehub
+#import kagglehub
 
+#Set the default path to the dataset
+#path = "/research/osz09/shared_students/Spring_2025"
 
 class BreastUltrasoundDataset(Dataset):
     def __init__(self, root_dir, transform=None):
@@ -43,27 +45,29 @@ class BreastUltrasoundDataset(Dataset):
         return image, label
 
 # Define Data Transformations
-transform = transforms.Compose([
+transform_default = transforms.Compose([
     transforms.Resize((224, 224)),  # Resize images to 224x224 for CNN models
     transforms.ToTensor(),  # Convert image to tensor
-    transforms.Normalize(mean=[0.5], std=[0.5])  # Normalize between -1 and 1
+    transforms.Normalize(mean=[0], std=[1])  # Normalize between -1 and 1
 ])
 
 # Download dataset using kagglehub
-path = kagglehub.dataset_download("aryashah2k/breast-ultrasound-images-dataset")
-print("Path to dataset files:", path)
+#path = kagglehub.dataset_download("aryashah2k/breast-ultrasound-images-dataset")
+#print("Path to dataset files:", path)
+def dataset_load(path = "/research/osz09/shared_students/Spring_2025", print_info=False, transform=transform_default):
+    # Set the dataset path
+    dataset_path = os.path.join(path, "Dataset_BUSI_with_GT")
 
-# Set the dataset path
-dataset_path = os.path.join(path, "Dataset_BUSI_with_GT")
+    # Initialize dataset
+    breast_ultrasound_dataset = BreastUltrasoundDataset(root_dir=dataset_path, transform=transform)
 
-# Initialize dataset
-breast_ultrasound_dataset = BreastUltrasoundDataset(root_dir=dataset_path, transform=transform)
+    # Create DataLoader
+    dataloader = DataLoader(breast_ultrasound_dataset, batch_size=16, shuffle=True, num_workers=2)
 
-# Create DataLoader
-dataloader = DataLoader(breast_ultrasound_dataset, batch_size=16, shuffle=True)
-
-# Example: Fetch a batch of images and labels
-for images, labels in dataloader:
-    print(f"Batch Image Shape: {images.shape}")  # Expected: (batch_size, 3, 224, 224)
-    print(f"Batch Labels: {labels}")
-    break  # Only show first batch
+    # Example: Fetch a batch of images and labels
+    if print_info:
+        for images, labels in dataloader:
+            print(f"Batch Image Shape: {images.shape}")  # Expected: (batch_size, 3, 224, 224)
+            print(f"Batch Labels: {labels}")
+            break  # Only show first batch
+    return dataloader
