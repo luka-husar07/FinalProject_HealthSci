@@ -3,7 +3,7 @@ import torch
 from torch.utils.data import Dataset, DataLoader
 from torchvision import transforms
 from PIL import Image
-#import kagglehub
+import kagglehub
 
 #Set the default path to the dataset
 #path = "/research/osz09/shared_students/Spring_2025"
@@ -71,3 +71,6 @@ def dataset_load(path = "/research/osz09/shared_students/Spring_2025", print_inf
             print(f"Batch Labels: {labels}")
             break  # Only show first batch
     return dataloader
+
+if __name__ == "__main__":
+    dataset_load(kagglehub.dataset_download("aryashah2k/breast-ultrasound-images-dataset"), print_info=True)
