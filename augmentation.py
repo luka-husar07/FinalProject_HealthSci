@@ -7,9 +7,9 @@ def get_augmented_transform():
         transforms.RandomRotation(degrees=30),  
         transforms.RandomAffine(degrees=0, translate=(0.1, 0.1)),  
         transforms.RandomResizedCrop(size=224, scale=(0.9, 1.1)),  
+        transforms.RandomAdjustSharpness(sharpness_factor=2),
         transforms.RandomVerticalFlip(p=0.5),  
-        transforms.ColorJitter(brightness=0.2, contrast=0.2),  
         transforms.GaussianBlur(kernel_size=3, sigma=(0.1, 2.0)),  
         transforms.ToTensor(),  
-        transforms.Normalize(mean=[0], std=[1])  
+        transforms.Normalize(mean=[0.5], std=[0.5])  
     ])
