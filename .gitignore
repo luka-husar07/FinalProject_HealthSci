@@ -1,1 +1,5 @@
 best_cnn.pth
+best_cnn.pth
+loss_plot.png
+accuracy_plot.png
+confusion_matrix.png
